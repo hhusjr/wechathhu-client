@@ -1,0 +1,29 @@
+.header {
+  width: 100%;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.weui-grid {
+  padding: 8px;
+}
+
+.weui-grid__icon-lg {
+  padding: 5px;
+  background: #000;
+  margin: 0 auto;
+  width: 50px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.weui-grid__icon-lg icon {
+  font-size: 36px;
+  line-height: 36px;
+  color: #fff;
+  margin: 0;
+}
+
+.weui-grid__label {
+  color: #888;
+}

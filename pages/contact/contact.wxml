@@ -1,0 +1,137 @@
+<view class="cu-bar bg-white search fixed">
+  <view class="action">
+    <switch class="orange radius sm" checked bindchange="friendOnly"></switch>
+  </view>
+  <view class="search-form round">
+    <text class="cuIcon-search"></text>
+    <input type="text" placeholder="搜索名字/部职/QQ/电话" confirm-type="search" bindinput="inputKeyword"></input>
+  </view>
+  <view class="action">
+    <button size="mini" bindtap="doSearch" class="cu-btn bg-gradual-orange shadow-blur round">搜索</button>
+  </view>
+</view>
+<scroll-view scroll-y class="indexes" scroll-into-view="indexes-{{listCurID}}" style="height:calc(100vh - 50px)" scroll-with-animation="true" enable-back-to-top="true">
+  <block wx:for="{{list}}" wx:key>
+    <view class="padding indexItem-{{list[index]}}" id="indexes-{{list[index]}}" data-index="{{list[index]}}">{{list[index]}}</view>
+    <view class="cu-list menu-avatar no-padding">
+      <view class="cu-item" wx:for="{{contacts[list[index]]}}" wx:key wx:for-item="user" wx:for-index="subIndex">
+        <view class="cu-avatar round lg">{{userMeta[user].fullname[0]}}</view>
+        <view class="content">
+          <view class="text-grey">{{userMeta[user].fullname}}</view>
+          <view class="text-gray text-sm">
+            <block wx:if="{{userMeta[user].department}}">{{userMeta[user].department}}</block>
+            <block wx:if="{{userMeta[user].post}}">{{userMeta[user].post}}</block>
+          </view>
+        </view>
+        <view class="action">
+          <button size="mini" wx:if="{{!userMeta[user].is_friend}}" class="round cu-btn bg-green" catchtap="doFriend" data-action="add" data-alpha="{{list[index]}}" data-index="{{subIndex}}">
+            <view class="cuIcon-add"></view>
+          </button>
+          <button size="mini" wx:else class="round cu-btn bg-red" catchtap="doFriend" data-action="remove" data-alpha="{{list[index]}}" data-index="{{subIndex}}">
+            <view class="cuIcon-close"></view>
+          </button>
+        </view>
+        <view class="action">
+          <button size="mini" class="round cu-btn bg-blue" catchtap="doContact" data-id="{{userMeta[user].user_meta.id}}">
+            <view class="cuIcon-news"></view>
+          </button>
+        </view>
+        <view class="action" wx:if="{{userMeta[user].phone}}">
+          <button size="mini" class="round cu-btn bg-blue" catchtap="doPhone" data-id="{{userMeta[user].user_meta.id}}">
+            <view class="cuIcon-phone"></view>
+          </button>
+        </view>
+        <view class="action">
+          <button size="mini" class="round cu-btn bg-white" catchtap="doShowMeta" data-id="{{userMeta[user].user_meta.id}}">
+            <view class="cuIcon-right"></view>
+          </button>
+        </view>
+      </view>
+    </view>
+  </block>
+  <view class="weui-loadmore weui-loadmore_line">
+    <text class="weui-loadmore__tips weui-loadmore__tips_in-line">到底了</text>
+  </view>
+  <include src="../../templates/footer.wxml" />
+</scroll-view>
+<view class="indexBar" style="height:calc(100vh - 50px)">
+  <view class="indexBar-box">
+    <view class="indexBar-item" wx:for="{{list}}" wx:key id="{{index}}" bindtouchstart="getCur" bindtouchend="setCur">{{list[index]}}</view>
+  </view>
+</view>
+<!--选择显示-->
+<view hidden="{{hidden}}" class="indexToast">
+  {{listCur}}
+</view>
+
+
+<view class="cu-modal drawer-modal justify-start {{showMeta ? 'show' : ''}}" bindtap="hideModal">
+  <view class="cu-dialog basis-lg" style="top:0;height:calc(100vh)">
+    <view class="cu-list menu text-left">
+      <view class="cu-item">
+        <view class="content">
+          <text class="cuIcon-people text-purple"></text> 全名
+        </view>
+        <view class="action">
+          <text class="text-grey text-sm">{{current.fullname ? current.fullname : ''}}</text>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content">
+          <text class="cuIcon-phone text-green"></text> 手机
+        </view>
+        <view class="action">
+          <text class="text-grey text-sm">{{current.phone ? current.phone : ''}}</text>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content">
+          <text class="cuIcon-dianhua text-orange"></text> 座机
+        </view>
+        <view class="action">
+          <text class="text-grey text-sm">{{current.tel ? current.tel : ''}}</text>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content">
+          <text class="cuIcon-addressbook text-blue"></text> 部门
+        </view>
+        <view class="action">
+          <text class="text-grey text-sm">{{current.department ? current.department : ''}}</text>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content">
+          <text class="cuIcon-selection text-red"></text> 职位
+        </view>
+        <view class="action">
+          <text class="text-grey text-sm">{{current.post ? current.post : ''}}</text>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content">
+          <text class="cuIcon-weixin text-green"></text> QQ
+        </view>
+        <view class="action">
+          <text class="text-grey text-sm">{{current.qq ? current.qq : ''}}</text>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content">
+          <text class="cuIcon-weixin text-blue"></text> 微信
+        </view>
+        <view class="action">
+          <text class="text-grey text-sm">{{current.wechat ? current.wechat : ''}}</text>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content">
+          <text class="cuIcon-sort text-red"></text> 简介
+        </view>
+        <view class="action">
+          <text class="text-grey text-sm">{{current.description ? current.description : ''}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

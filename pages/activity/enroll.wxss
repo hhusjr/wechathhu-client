@@ -1,0 +1,13 @@
+.header {
+  width: 100%;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.detail-content {
+  padding: 10px;
+}
+
+.checkbox-cell {
+  padding: 5px;
+}

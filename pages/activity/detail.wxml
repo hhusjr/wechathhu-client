@@ -1,0 +1,78 @@
+<view class="page">
+  <view>
+    <image src="../../style/imgs/header.jpg" mode="widthFix" class="header" />
+  </view>
+  <view class="weui-panel">
+    <view class="weui-panel__hd">
+      <icon class="iconfont icon-topraning"></icon> {{name}}</view>
+    <view class="weui-panel__bd">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell">
+          <view class="weui-cell__bd">
+            <icon class="iconfont icon-clock"></icon> 开始时间</view>
+          <view class="weui-cell__ft">{{startTime}}</view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__bd">
+            <icon class="iconfont icon-clock"></icon> 结束时间</view>
+          <view class="weui-cell__ft">{{endTime}}</view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__bd">
+            <icon class="iconfont icon-map"></icon> 位置</view>
+          <view class="weui-cell__ft">{{location}}</view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__bd">
+            <icon class="iconfont icon-bussiness-man"></icon> 报名人数</view>
+          <view class="weui-cell__ft">{{enrollmentCount}} / {{limit != null ? limit : '无限制'}}</view>
+        </view>
+        <view class="weui-cell">
+          <navigator url="./enroll?id={{id}}" class="weui-form-preview__btn weui-form-preview__btn_primary color-red" hover-class="weui-form-preview__btn_active" wx:if="{{!isParticipant}}">
+            <icon class="iconfont icon-add-select"></icon> 我要报名</navigator>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="weui-panel">
+    <view class="weui-panel__hd">
+      <icon class="iconfont icon-all"></icon> 打卡记录</view>
+    <view class="weui-panel__bd">
+      <scroll-view scroll-x class="bg-white padding response cu-steps steps-bottom" scroll-into-view="scroll-{{scroll}}" scroll-with-animation>
+        <view wx:for="{{clockin}}" class="cu-item {{!item.is_clockin ? '' : 'text-green'}} padding-lr-xl">
+          {{item.label}}
+          <text class="num" data-index="{{index + 1}}"></text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <view class="weui-panel">
+    <view class="weui-panel__hd">
+      <icon class="iconfont icon-all"></icon> 详细介绍</view>
+    <view class="weui-panel__bd detail-content">
+      {{description}}
+    </view>
+  </view>
+
+  <view class="weui-panel">
+    <view class="weui-panel__hd">
+      <icon class="iconfont icon-topraning"></icon> 报名</view>
+    <view class="weui-panel__bd">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell">
+          <view class="weui-cell__bd">
+            <icon class="iconfont icon-bussiness-man"></icon> 报名人数</view>
+          <view class="weui-cell__ft">{{enrollmentCount}} / {{limit != null ? limit : '无限制'}}</view>
+        </view>
+        <view class="weui-cell">
+          <navigator url="./enroll?id={{id}}" class="weui-form-preview__btn weui-form-preview__btn_primary color-red" hover-class="weui-form-preview__btn_active" wx:if="{{!isParticipant}}">
+            <icon class="iconfont icon-add-select"></icon> 我要报名</navigator>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <include src="../../templates/footer.wxml" />
+</view>

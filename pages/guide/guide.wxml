@@ -1,0 +1,48 @@
+<view class="weui-search-bar">
+  <view class="weui-search-bar__form">
+    <view class="weui-search-bar__box">
+      <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+      <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
+      <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
+        <icon type="clear" size="14"></icon>
+      </view>
+    </view>
+    <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
+      <icon class="weui-icon-search" type="search" size="14"></icon>
+      <view class="weui-search-bar__text">搜索服务指南</view>
+    </label>
+  </view>
+  <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
+</view>
+<view class="VerticalBox">
+  <scroll-view class="VerticalNav nav" scroll-y scroll-with-animation scroll-top="{{VerticalNavTop}}" style="height:calc(100vh - 48px)">
+    <view class="cu-item left-item {{index==TabCur?'cur':''}}" wx:for="{{list}}" wx:key bindtap='tabSelect' data-id="{{index}}">
+      {{item.name}}
+    </view>
+  </scroll-view>
+  <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 48px)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain">
+    <view class="solid-left" wx:for="{{list}}" wx:key id="main-{{index}}">
+      <view class='cu-bar solid-bottom bg-white'>
+        <view class='action'>
+          <text class='cuIcon-sort text-purple'></text> {{item.name}} </view>
+      </view>
+      <view class="cu-list menu">
+        <view class="cu-item" wx:for="{{guides[item.cid]}}" wx:for-item="guide">
+          <view class="content padding-xs">
+            <view>{{guide.name}}</view>
+            <view class="text-gray text-sm">{{guide.created}}
+            </view>
+            <view class="flex justify-between">
+              <view class="margin-xs">
+                <button size="mini" class="cu-btn btn" bindtap="doDownload" data-id="{{guide.id}}">下载</button>
+              </view>
+              <view class="margin-xs">
+                <button size="mini" class="cu-btn btn" bindtap="doEmail" data-id="{{guide.id}}">发送至邮箱</button>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

@@ -1,0 +1,160 @@
+<view class="page">
+  <view class="weui-navbar">
+    <block wx:for="{{tabs}}" wx:key="*this">
+      <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+        <view class="weui-navbar__title">{{item}}</view>
+      </view>
+    </block>
+  </view>
+  <view class="weui-tab__panel">
+    <view class="weui-tab__content" wx:if="{{activeIndex == 0}}">
+      <view class="weui-cells__group weui-cells__group_form">
+        <view class="weui-cells weui-cells_after-title">
+          <view class="weui-cell ">
+            <view class="weui-cell__hd">
+              <view class="weui-label">教工号</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input disabled="disabled" class="weui-input" value="{{userName}}" />
+            </view>
+          </view>
+          <view class="weui-cell {{errors['email'] ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__hd">
+              <view class="weui-label">邮箱</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" bindinput="inputEmail" value="{{email}}" />
+            </view>
+            <view class="weui-cell__ft" wx:if="{{errors['email']}}">
+              <icon type="warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+          <view class="weui-cell {{errors['last_name'] ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__hd">
+              <view class="weui-label">姓氏</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" bindinput="inputLastName" value="{{lastName}}" />
+            </view>
+            <view class="weui-cell__ft" wx:if="{{errors['last_name']}}">
+              <icon type="warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+          <view class="weui-cell {{errors['first_name'] ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__hd">
+              <view class="weui-label">名字</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" bindinput="inputFirstName" value="{{firstName}}" />
+            </view>
+            <view class="weui-cell__ft" wx:if="{{errors['first_name']}}">
+              <icon type="warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+          <view class="weui-cell {{errors['password'] ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__hd">
+              <view class="weui-label">密码</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" type="password" bindinput="inputPassword" />
+            </view>
+            <view class="weui-cell__ft" wx:if="{{errors['password']}}">
+              <icon type="warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+        </view>
+        <view class="weui-cells__tips">密码留空则表示不用修改。</view>
+      </view>
+      <view class="weui-btn-area">
+        <button type="primary" catchtap="doChange">编辑</button>
+      </view>
+    </view>
+    <view class="weui-tab__content" wx:if="{{activeIndex == 1}}">
+      <view class="weui-cells__group weui-cells__group_form">
+        <view class="weui-cells weui-cells_after-title">
+          <view class="weui-cell {{errors['department'] ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__hd">
+              <view class="weui-label">部门</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" bindinput="inputMeta" data-name="department" value="{{userMeta.department}}" />
+            </view>
+            <view class="weui-cell__ft" wx:if="{{errors['department']}}">
+              <icon type="warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+                    <view class="weui-cell {{errors['post'] ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__hd">
+              <view class="weui-label">职位</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" bindinput="inputMeta" data-name="post" value="{{userMeta.post}}" />
+            </view>
+            <view class="weui-cell__ft" wx:if="{{errors['post']}}">
+              <icon type="warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+          <view class="weui-cell {{errors['qq'] ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__hd">
+              <view class="weui-label">QQ号</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" bindinput="inputMeta" data-name="qq" value="{{userMeta.qq}}" />
+            </view>
+            <view class="weui-cell__ft" wx:if="{{errors['qq']}}">
+              <icon type="warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+          <view class="weui-cell {{errors['wechat'] ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__hd">
+              <view class="weui-label">微信</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" bindinput="inputMeta" data-name="wechat" value="{{userMeta.wechat}}" />
+            </view>
+            <view class="weui-cell__ft" wx:if="{{errors['wechat']}}">
+              <icon type="warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+          <view class="weui-cell {{errors['tel'] ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__hd">
+              <view class="weui-label">座机</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" bindinput="inputMeta" data-name="tel" value="{{userMeta.tel}}" />
+            </view>
+            <view class="weui-cell__ft" wx:if="{{errors['tel']}}">
+              <icon type="warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+          <view class="weui-cell {{errors['phone'] ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__hd">
+              <view class="weui-label">手机号</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" bindinput="inputMeta" data-name="phone" value="{{userMeta.phone}}" />
+            </view>
+            <view class="weui-cell__ft" wx:if="{{errors['phone']}}">
+              <icon type="warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+          <view class="weui-cell {{errors['description'] ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__hd">
+              <view class="weui-label">简介</view>
+            </view>
+            <view class="weui-cell__bd">
+              <textarea class="description" bindinput="inputMeta" data-name="description" value="{{userMeta.description}}" />
+            </view>
+            <view class="weui-cell__ft" wx:if="{{errors['description']}}">
+              <icon type="warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="weui-btn-area">
+        <button type="primary" catchtap="submitMeta">编辑</button>
+      </view>
+    </view>
+  </view>
+  <include src="../../templates/footer.wxml" />
+</view>

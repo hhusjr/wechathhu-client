@@ -1,0 +1,45 @@
+<view class="page">
+  <view class="weui-navbar">
+    <navigator class="weui-navbar__item" url="reserve" open-type="redirect">
+      <view class="weui-navbar__title">我要预约</view>
+    </navigator>
+    <navigator class="weui-navbar__item weui-bar__item_on" url="my" open-type="redirect">
+      <view class="weui-navbar__title">我的预约</view>
+    </navigator>
+  </view>
+
+  <view class="detailed-list-container" wx:for="{{reservations}}" wx:key="id">
+    <view class="weui-form-preview">
+      <view class="weui-form-preview__hd">
+        <view class="weui-form-preview__label strong">{{item.meetingroom}}</view>
+        <view class="weui-form-preview__value">{{item.location}} {{item.seatsCount}}人间</view>
+      </view>
+      <view class="weui-form-preview__bd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">
+            <icon class="iconfont icon-clock color-orange"></icon> 开始时间</view>
+          <view class="weui-form-preview__value">{{item.reserveFrom}}</view>
+        </view>
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">
+            <icon class="iconfont icon-clock color-green"></icon> 结束时间</view>
+          <view class="weui-form-preview__value">{{item.reserveTo}}</view>
+        </view>
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">
+            <icon class="iconfont icon-form color-blue"></icon> 预约原因</view>
+          <view class="weui-form-preview__value">{{item.description}}</view>
+        </view>
+      </view>
+      <view class="weui-form-preview__ft">
+        <view class="weui-form-preview__btn weui-form-preview__btn_primary color-red" hover-class="weui-form-preview__btn_active" data-id="{{item.id}}" data-index="{{index}}" bindtap="cancelReservation">
+          <icon class="iconfont icon-close"></icon> 取消预约</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="weui-loadmore weui-loadmore_line">
+    <text class="weui-loadmore__tips weui-loadmore__tips_in-line">只能显示这么多了</text>
+  </view>
+  <include src="../../templates/footer.wxml" />
+</view>

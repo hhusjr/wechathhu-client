@@ -1,0 +1,45 @@
+<view class="page">
+  <view>
+    <image src="../../style/imgs/header.jpg" mode="widthFix" class="header" />
+  </view>
+
+  <view class="weui-panel">
+    <view class="weui-panel__hd">
+      <icon class="iconfont icon-topraning"></icon> {{activity}} 报名</view>
+    <view class="weui-panel__bd">
+      <view class="weui-cells weui-cells_after-title" wx:for="{{formMetas}}" wx:for-index="name" wx:for-item="field">
+        <view class="weui-cell ">
+          <view class="weui-cell__hd">
+            <view class="weui-label">{{name}}</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input wx:if="{{field.type == 'text'}}" class="weui-input" value="{{values[name]}}" bindinput="handleTextField" data-name="{{name}}" />
+            <input wx:if="{{field.type == 'number'}}" type="number" class="weui-input" bindinput="handleTextField" value="{{values[name]}}" data-name="{{name}}" />
+            <textarea wx:if="{{field.type == 'textarea'}}" class="weui-textarea" value="{{values[name]}}" bindinput="handleTextField" style="height: 5em; width: 100%;" data-name="{{name}}" />
+            <picker wx:if="{{field.type == 'radio'}}" value="{{values[name]}}" range="{{field.choices}}" bindchange="handleRadioField" data-name="{{name}}">
+              <text>{{field.choices[values[name]]}}</text>
+            </picker>
+            <checkbox-group bindchange="handleCheckboxField" wx:if="{{field.type == 'checkbox'}}" data-name="{{name}}">
+              <label class="weui-cell weui-check__label checkbox-cell" wx:for="{{field.choices}}" wx:key="value">
+                <checkbox class="weui-check" value="{{index}}" checked="{{values[name][index]}}" />
+                <view class="weui-cell__hd weui-check__hd_in-checkbox">
+                  <icon class="weui-icon-checkbox_circle" type="circle" size="23"
+                  wx:if="{{!values[name][index]}}"></icon>
+                  <icon class="weui-icon-checkbox_success" type="success" size="23"
+                  wx:if="{{values[name][index]}}"></icon>
+                </view>
+                <view class="weui-cell__bd">{{item}}</view>
+              </label>
+            </checkbox-group>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="weui-btn-area">
+    <button type="primary" catchtap="doEnroll">报名</button>
+  </view>
+
+  <include src="../../templates/footer.wxml" />
+</view>

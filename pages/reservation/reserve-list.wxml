@@ -1,0 +1,73 @@
+<view class="VerticalBox">
+  <scroll-view class="VerticalNav nav" scroll-y scroll-with-animation style="height:calc(100vh)">
+    <view class="cu-item {{item == chosenLocation ? 'text-green cur' : ''}}" wx:for="{{locations}}" wx:key bindtap='tabSelect' data-location="{{item}}">
+      {{item}}
+    </view>
+  </scroll-view>
+  <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh)">
+    <view class="padding-top padding-lr">
+      <view class='cu-bar solid-bottom bg-white'>
+        <view class='action'>
+          <text class='cuIcon-calendar text-red'></text> {{date}}
+          <text class="margin-left-lg text-blue" bindtap="goBack">返回</text>
+        </view>
+      </view>
+    </view>
+    <view class="padding-top padding-lr" wx:for="{{availableMeetingrooms[chosenLocation]}}" wx:key>
+      <view class='cu-bar solid-bottom bg-white'>
+        <view class='action'>
+          <text class='cuIcon-title text-green'></text> {{item.info.name}}
+          <view class="cu-tag radius sm margin-left-xs bg-blue">{{item.info.label}}</view>
+        </view>
+      </view>
+      <view class="cu-list menu">
+        <view class="cu-item">
+          <view class="content">
+            <view class="text-grey">
+              <text class="cuIcon-friend text-orange margin-right-xs"></text>{{item.info.seatsCount}}人间
+            </view>
+          </view>
+        </view>
+        <view class="cu-item">
+          <view class="content">
+            <view class="text-grey">
+              <text class="cuIcon-edit text-orange margin-right-xs"></text>{{item.info.description}}
+            </view>
+          </view>
+        </view>
+        <view class="cu-item" bindtap="toggleShowing" data-index="{{index}}">
+          <view class="content">
+            <view class="text-grey">
+              <text class="cuIcon-triangle{{!isShowing[index] ? 'down' : 'up'}}fill text-orange margin-right-xs"></text> 预约时段
+            </view>
+          </view>
+        </view>
+        <view class="cu-item arrow" data-meetingroom="{{index}}" data-choice="0" bindtap="confirmReserve">
+          <view class="content">
+            <text class="cuIcon-timefill text-orange margin-right-xs"></text>{{item.choices[0].display.timeFrom}} ～ {{item.choices[0].display.timeTo}}
+          </view>
+        </view>
+        <view class="cu-item arrow" wx:for="{{item.choices}}" wx:for-item="choice" wx:for-index="index1" wx:if="{{index1 && isShowing[index]}}" data-meetingroom="{{index}}" data-choice="{{index1}}" bindtap="confirmReserve">
+          <view class="content">
+            <text class="cuIcon-timefill text-orange margin-right-xs"></text>{{choice.display.timeFrom}} ～ {{choice.display.timeTo}}
+          </view>
+        </view>
+      </view>
+    </view>
+    <include src="../../templates/footer.wxml" />
+  </scroll-view>
+</view>
+
+<view class="cu-modal bottom-modal {{confirmReserve ? 'show' : ''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white">
+      <view class="action text-green" bindtap="chooseMeetingroom" data-meetingroom="{{meetingroomIndex}}" data-choice="{{choiceIndex}}">预约</view>
+      <view class="action text-blue" bindtap="hideConfirmReserve">取消</view>
+    </view>
+    <view class="padding-lr-xs">
+      <view class="cu-form-group solid-top">
+        <textarea placeholder="输入预约原因..." class="reason-box" bindinput="inputReason" value="{{reason}}"></textarea>
+      </view>
+    </view>
+  </view>
+</view>

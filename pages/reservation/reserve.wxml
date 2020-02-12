@@ -1,0 +1,92 @@
+<view class="page">
+  <view wx:if="{{showQueryForm}}">
+    <view class="weui-navbar">
+      <navigator class="weui-navbar__item weui-bar__item_on" url="reserve" open-type="redirect">
+        <view class="weui-navbar__title">我要预约</view>
+      </navigator>
+      <navigator class="weui-navbar__item" url="my" open-type="redirect">
+        <view class="weui-navbar__title">我的预约</view>
+      </navigator>
+    </view>
+    <view>
+      <image src="../../style/imgs/header.jpg" mode="widthFix" class="header" />
+    </view>
+    <view class="weui-cells__group weui-cells__group_form">
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell ">
+          <view class="weui-cell__hd">
+            <view class="weui-label">开会人数</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="参会人数" type="number" bindinput="inputPeopleCount" value="{{peopleCount}}" />
+          </view>
+        </view>
+        <view class="weui-cell ">
+          <view class="weui-cell__hd">
+            <view class="weui-label">开会日期</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{date}}" start="{{today}}" bindchange="onDateChange">
+              <text>{{date ? date : '选择...'}}</text>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <view class="weui-label">从</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="time" value="{{time_from}}" bindchange="onFromTimeChange">
+              <text>{{timeFrom ? timeFrom : '选择...'}}</text>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <view class="weui-label">到</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="time" value="{{time_to}}" bindchange="onToTimeChange">
+              <text>{{timeTo ? timeTo : '选择...'}}</text>
+            </picker>
+          </view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <view class="weui-label">开会时长</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" type="number" bindinput="inputLength" placeholder="选填" />
+          </view>
+          <view class="weui-cell__hd">
+            <view class="weui-label">分钟</view>
+          </view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <view class="weui-label">会议室标签</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" bindinput="inputLabel" value="{{label}}" placeholder="选填" />
+          </view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <view class="weui-label">会议室位置</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" value="{{location}}" bindinput="inputLocation" placeholder="选填" />
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__tips">开会时长如果不填写，则默认是从填入的开始时间到填入的结束时间。如果填写，则系统会在填入的开始时间到填入的结束时间之间智能分配。确定后将显示所有可用的会议室和时间段供选择。</view>
+    </view>
+    <view class="weui-btn-area">
+      <button type="primary" catchtap="doShowMeetingrooms">查询会议室</button>
+    </view>
+    <include src="../../templates/footer.wxml" />
+  </view>
+  <view wx:else>
+    <include src="./reserve-list.wxml" />
+  </view>
+</view>

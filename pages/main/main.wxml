@@ -1,0 +1,75 @@
+<view class="page">
+  <view>
+    <image src="../../style/imgs/header.jpg" mode="widthFix" class="header" />
+  </view>
+  <view class="weui-panel">
+    <view class="weui-panel__hd"><icon class="iconfont icon-usercenter"></icon> 欢迎您，{{lastName}}{{firstName}}！</view>
+    <view class="weui-panel__bd">
+      <view class="weui-grids">
+          <navigator url="../contact/contact" class="weui-grid" hover-class="weui-grid_active">
+            <view class="weui-grid__icon-lg bg-green">
+              <icon class="iconfont icon-mobile-phone"></icon>
+            </view>
+            <view class="weui-grid__label">通讯录</view>
+          </navigator>
+          <navigator url="" class="weui-grid" hover-class="weui-grid_active">
+            <view class="weui-grid__icon-lg bg-red">
+              <icon class="iconfont icon-notice"></icon>
+            </view>
+            <view class="weui-grid__label">通知</view>
+          </navigator>
+          <view catchtap="userSettings" class="weui-grid" hover-class="weui-grid_active">
+            <view class="weui-grid__icon-lg bg-blue">
+              <icon class="iconfont icon-set"></icon>
+            </view>
+            <view class="weui-grid__label">账户选项</view>
+          </view>
+      </view>
+    </view>    
+  </view>
+  <view class="weui-panel">
+    <view class="weui-panel__hd"><icon class="iconfont icon-service"></icon> 服务</view>
+    <view class="weui-panel__bd">
+      <view class="weui-grids">
+          <navigator url="../guide/guide" class="weui-grid" hover-class="weui-grid_active">
+            <view class="weui-grid__icon-lg bg-orange">
+              <icon class="iconfont icon-smile"></icon>
+            </view>
+            <view class="weui-grid__label">服务指南</view>
+          </navigator>
+          <navigator url="../repair/request" class="weui-grid" hover-class="weui-grid_active">
+            <view class="weui-grid__icon-lg bg-purple">
+              <icon class="iconfont icon-tool-hardware"></icon>
+            </view>
+            <view class="weui-grid__label">故障报修</view>
+          </navigator>
+          <navigator url="../reservation/reserve" class="weui-grid" hover-class="weui-grid_active">
+            <view class="weui-grid__icon-lg bg-green">
+              <icon class="iconfont icon-order"></icon>
+            </view>
+            <view class="weui-grid__label">会议室预约</view>
+          </navigator>
+      </view>
+    </view>    
+  </view>
+  <view class="weui-panel">
+    <view class="weui-panel__hd"><icon class="iconfont icon-topraning"></icon> 活动</view>
+    <view class="weui-panel__bd">
+      <view class="weui-grids">
+          <navigator url="../activity/list" class="weui-grid" hover-class="weui-grid_active">
+            <view class="weui-grid__icon-lg bg-purple">
+              <icon class="iconfont icon-add-account"></icon>
+            </view>
+            <view class="weui-grid__label">活动与报名</view>
+          </navigator>
+          <view bindtap="doClockin" class="weui-grid" hover-class="weui-grid_active">
+            <view class="weui-grid__icon-lg bg-blue">
+              <icon class="iconfont icon-operation"></icon>
+            </view>
+            <view class="weui-grid__label">打卡</view>
+          </view>
+      </view>
+    </view>    
+  </view>
+  <include src="../../templates/footer.wxml" />
+</view>

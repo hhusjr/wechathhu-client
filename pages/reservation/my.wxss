@@ -1,0 +1,8 @@
+.detailed-list-container {
+  padding: 10px;
+}
+
+.detailed-list-container .weui-form-preview {
+  border-radius: 10px;
+  margin: 0;
+}

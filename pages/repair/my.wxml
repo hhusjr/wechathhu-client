@@ -1,0 +1,33 @@
+<view class="page">
+  <view class="weui-navbar">
+    <navigator class="weui-navbar__item" url="request" open-type="redirect">
+      <view class="weui-navbar__title">我要报修</view>
+    </navigator>
+    <navigator class="weui-navbar__item weui-bar__item_on" url="my" open-type="redirect">
+      <view class="weui-navbar__title">我的报修</view>
+    </navigator>
+  </view>
+
+  <view class="detailed-list-container" wx:for="{{repairs}}" wx:key="id">
+    <view class="weui-form-preview">
+      <view class="weui-form-preview__hd">
+        <view class="weui-form-preview__label strong">{{item.category.name}}</view>
+        <view class="weui-form-preview__value">{{item.location}}</view>
+      </view>
+      <view class="weui-form-preview__bd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">
+            <icon class="iconfont icon-form color-orange"></icon> 报修状态</view>
+          <view class="weui-form-preview__value text-{{statusColor[item.status]}}}}">{{statusText[item.status]}}</view>
+        </view>
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">
+            <icon class="iconfont icon-form color-blue"></icon> 故障简述</view>
+          <view class="weui-form-preview__value">{{item.description}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <include src="../../templates/footer.wxml" />
+</view>

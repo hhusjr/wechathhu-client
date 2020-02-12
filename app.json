@@ -1,0 +1,25 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/user/login",
+    "pages/main/main",
+    "pages/user/change",
+    "pages/activity/list",
+    "pages/activity/detail",
+    "pages/activity/enroll",
+    "pages/reservation/reserve",
+    "pages/reservation/my",
+    "pages/repair/request",
+    "pages/repair/my",
+    "pages/guide/guide",
+    "pages/contact/contact"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "HHU计信院微服务",
+    "navigationBarTextStyle": "black"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

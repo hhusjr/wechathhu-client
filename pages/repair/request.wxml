@@ -1,0 +1,48 @@
+<view class="page">
+  <view class="weui-navbar">
+    <navigator class="weui-navbar__item weui-bar__item_on" url="request" open-type="redirect">
+      <view class="weui-navbar__title">我要报修</view>
+    </navigator>
+    <navigator class="weui-navbar__item" url="my" open-type="redirect">
+      <view class="weui-navbar__title">我的报修</view>
+    </navigator>
+  </view>
+  <view>
+    <image src="../../style/imgs/header.jpg" mode="widthFix" class="header" />
+  </view>
+  <view class="weui-cells__group weui-cells__group_form">
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell ">
+        <view class="weui-cell__hd">
+          <view class="weui-label">故障地点</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="发生故障的位置" type="text" bindinput="inputLocation" value="{{location}}" />
+        </view>
+      </view>
+      <view class="weui-cell ">
+        <view class="weui-cell__hd">
+          <view class="weui-label">故障类别</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker bindchange="bindCategoryChange" value="{{index}}" range="{{names}}">
+            <text>{{categoryIndex !== null ? names[categoryIndex] : '选择...'}}</text>
+          </picker>
+        </view>
+      </view>
+
+      <view class="weui-cell ">
+        <view class="weui-cell__hd">
+          <view class="weui-label">故障概要</view>
+        </view>
+        <view class="weui-cell__bd">
+          <textarea style="height: 8em; width: 100%;" bindinput="inputDescription" value="{{description}}" placeholder="填入故障概要..."></textarea>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="weui-btn-area">
+    <button type="primary" catchtap="doRequest">申报故障</button>
+  </view>
+  <include src="../../templates/footer.wxml" />
+</view>

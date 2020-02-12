@@ -1,0 +1,63 @@
+<view class="page">
+  <view class="weui-navbar">
+    <block wx:for="{{tabs}}" wx:key="*this">
+      <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+        <view class="weui-navbar__title">{{item}}</view>
+      </view>
+    </block>
+  </view>
+  <view class="weui-tab__panel">
+    <view class="weui-tab__content">
+      <view class="weui-search-bar">
+        <view class="weui-search-bar__form">
+          <view class="weui-search-bar__box">
+            <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+            <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
+            <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
+              <icon type="clear" size="14"></icon>
+            </view>
+          </view>
+          <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
+            <icon class="weui-icon-search" type="search" size="14"></icon>
+            <view class="weui-search-bar__text">搜索活动名称</view>
+          </label>
+        </view>
+        <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
+      </view>
+      <view class="detailed-list-container" wx:for="{{activities}}" wx:key="item">
+        <view class="weui-form-preview">
+          <view class="weui-form-preview__hd">
+            <view class="weui-form-preview__label strong">{{item.name}}</view>
+            <view class="weui-form-preview__value">{{item.enrollmentCount}} / {{item.limit != null ? item.limit : '无限制'}}</view>
+          </view>
+          <view class="weui-form-preview__bd">
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">
+                <icon class="iconfont icon-clock color-orange"></icon> 开始时间</view>
+              <view class="weui-form-preview__value">{{item.startTime}}</view>
+            </view>
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">
+                <icon class="iconfont icon-clock color-green"></icon> 结束时间</view>
+              <view class="weui-form-preview__value">{{item.endTime}}</view>
+            </view>
+          </view>
+          <view class="weui-form-preview__ft">
+            <navigator url="./detail?id={{item.id}}" class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">
+              <icon class="iconfont icon-all"></icon> 查看详情</navigator>
+            <navigator url="./enroll?id={{item.id}}" class="weui-form-preview__btn weui-form-preview__btn_primary color-red" hover-class="weui-form-preview__btn_active" wx:if="{{!item.isParticipant}}">
+              <icon class="iconfont icon-add-select"></icon> 我要报名</navigator>
+          </view>
+        </view>
+      </view>
+      <view class="weui-loadmore" wx:if="{{!loaded}}">
+        <view class="weui-loading"></view>
+        <view class="weui-loadmore__tips">正在加载</view>
+      </view>
+      <view class="weui-loadmore weui-loadmore_line">
+        <text class="weui-loadmore__tips weui-loadmore__tips_in-line">只能显示这么多了，可搜索以减小范围</text>
+      </view>
+    </view>
+  </view>
+  <include src="../../templates/footer.wxml" />
+</view>

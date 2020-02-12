@@ -1,0 +1,5 @@
+<view class="footer-container">
+  <view class="weui-footer">
+    <view class="weui-footer__text">Copyright © 2020-2020 河海大学计信院</view>
+  </view>
+</view>
