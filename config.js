@@ -1,6 +1,6 @@
 export const organization = '河海大学计信院';
 
-export const serverRoot = 'http://192.168.0.2:8000';
+export const serverRoot = 'https://apis.wechathhu.sdlht.com:8000';
 
 export const serverRouter = {
   code2token: serverRoot + '/auth/wechat-code2token/',

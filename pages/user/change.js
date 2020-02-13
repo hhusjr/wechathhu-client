@@ -59,7 +59,7 @@ Page({
     R({
       url: config.serverRouter.currentUser + 'meta/',
       method: 'PUT',
-      data: emptyToNull(self.data.userMeta)
+      data: self.data.userMeta
     }, function (res) {
       for (var field in self.data.errors) self.data.errors[field] = false;
       self.setData({
