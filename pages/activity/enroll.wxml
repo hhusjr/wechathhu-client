@@ -10,7 +10,9 @@
       <view class="weui-cells weui-cells_after-title" wx:for="{{formMetas}}" wx:for-index="name" wx:for-item="field">
         <view class="weui-cell ">
           <view class="weui-cell__hd">
-            <view class="weui-label">{{name}}</view>
+            <view class="weui-label">
+            {{name}} <span wx:if="{{field.required}}" style="color: red; font-size: 15px;">*</span>
+            </view>
           </view>
           <view class="weui-cell__bd">
             <input wx:if="{{field.type == 'text'}}" class="weui-input" value="{{values[name]}}" bindinput="handleTextField" data-name="{{name}}" />

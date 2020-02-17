@@ -1,5 +1,6 @@
 export const organization = '河海大学计信院';
 
+// export const serverRoot = 'http://127.0.0.1:8000';
 export const serverRoot = 'https://apis.wechathhu.sdlht.com:8000';
 
 export const serverRouter = {
