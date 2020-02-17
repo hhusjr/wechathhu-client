@@ -58,6 +58,7 @@ Page({
         wx.showToast({
           title: '已报名过',
           duration: 2000,
+          mask: true,
           success: function () {
             setTimeout(function () {
               wx.navigateBack({});
@@ -151,8 +152,16 @@ Page({
           });
         }, function (res) {
           wx.hideLoading();
+          var errorInfo
+          if (res.data.non_field_errors) {
+            errorInfo = res.data.non_field_errors[0]
+          } else if (res.data.activity) {
+            errorInfo = res.data.activity[0]
+          } else {
+            errorInfo = '报名失败'
+          }
           wx.showToast({
-            title: res.data.non_field_errors[0],
+            title: errorInfo,
             icon: 'none'
           });
         });

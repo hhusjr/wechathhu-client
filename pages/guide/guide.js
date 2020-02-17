@@ -87,7 +87,7 @@ Page({
       inputVal: '',
       queryParams: this.data.queryParams
     });
-    this.queryList();
+    this.getQueryset();
   },
   inputTyping: function (e) {
     this.data.queryParams['search'] = e.detail.value;

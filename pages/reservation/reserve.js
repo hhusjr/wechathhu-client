@@ -217,6 +217,11 @@ Page({
     var reserveFrom = this.data.availableMeetingrooms[location][meetingroomIndex].choices[choiceIndex].raw.timeFrom
     var reserveTo = this.data.availableMeetingrooms[location][meetingroomIndex].choices[choiceIndex].raw.timeTo
 
+    wx.showLoading({
+      title: '预约中',
+      mask: true
+    })
+
     R({
       url: config.serverRouter.reservations,
       method: 'POST',
@@ -227,19 +232,31 @@ Page({
         'description': self.data.reason
       }
     }, function () {
+      wx.hideLoading()
       wx.showToast({
         title: '预约成功',
         mask: true,
         duration: 2000
-      })
-      self.setData({
-        confirmReserve: false
       })
       setTimeout(function () {
         wx.redirectTo({
           url: 'my',
         })
       }, 2000)
+    }, function () {
+      wx.showToast({
+        title: '会议室在该时间段已经被占用',
+        mask: true,
+        icon: 'none',
+        duration: 2000
+      })
+      setTimeout(function () {
+        self.goBack()
+      }, 2000)
+    }, function () {
+      self.setData({
+        confirmReserve: false
+      })
     })
   },
 

@@ -78,6 +78,14 @@
       </view>
       <view class="cu-item">
         <view class="content">
+          <text class="cuIcon-mail text-red"></text> 邮箱
+        </view>
+        <view class="action">
+          <text class="text-grey text-sm">{{current.user_meta.email ? current.user_meta.email : ''}}</text>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content">
           <text class="cuIcon-phone text-green"></text> 手机
         </view>
         <view class="action">
