@@ -26,7 +26,7 @@ Page({
           mask: true
         })
         R({
-          url: config.serverRouter.activities + 'clockin/',
+          url: config.serverRouter.activities + 'clockins/',
           method: 'POST',
           data: {
             key: key
