@@ -37,11 +37,7 @@ Page({
   friendOnly: function (e) {
     var checked = e.detail.value
     this.data.queryParams['my'] = checked ? 'yes' : 'no'
-    this.getQueryset()
-    wx.showToast({
-      title: checked ? '仅显示同事' : '显示所有人员',
-      icon: 'none'
-    })
+    this.getQueryset(true, checked ? '仅显示同事' : '显示所有人员')
   },
 
   inputKeyword: function (e) {
@@ -52,21 +48,31 @@ Page({
 
   doSearch: function (e) {
     this.data.queryParams['search'] = this.data.keyword
-    this.getQueryset()
+    this.getQueryset(true)
   },
 
-  getQueryset: function () {
-    wx.showLoading({
-      title: '加载中...',
-      mask: true
-    })
+  getQueryset: function (showLoad = false, tipMessage = null) {
+    if (showLoad) {
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      })
+    }
     var self = this
     R({
       url: config.serverRouter.contacts,
       method: 'GET',
       data: self.data.queryParams
     }, function (res) {
-      wx.hideLoading()
+      if (showLoad) {
+        wx.hideLoading()
+      }
+      if (tipMessage) {
+        wx.showToast({
+          title: tipMessage,
+          icon: 'none'
+        })
+      }
       var users = res.data
       var list = []
       var contacts = {}
@@ -90,7 +96,7 @@ Page({
   },
 
   onLoad() {
-    this.getQueryset()
+    this.getQueryset(true)
   },
   onReady() {
     let that = this;
