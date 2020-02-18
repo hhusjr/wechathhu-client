@@ -78,13 +78,16 @@ Page({
           continue;
         }
         if (field.type == 'radio') {
-          values[name] = field.choices.indexOf(field.default);
+          values[name] = field.default ? field.choices.indexOf(field.default) : 0;
           continue;
         }
         if (field.type == 'checkbox') {
-          values[name] = [];
-          for (var def in field.default) {
-            values[name].push(field.choices.indexOf(def));
+          values[name] = {};
+          if (!field.default) continue;
+          for (var def of field.default) {
+            var choicePos = field.choices.indexOf(def)
+            if (choicePos == -1) continue
+            values[name][choicePos] = true;
           }
           continue;
         }
