@@ -188,16 +188,16 @@ Page({
       url: config.serverRouter.guides + id + '/email/',
       method: 'POST'
     }, function (res) {
+      wx.hideLoading()
       wx.showToast({
         title: '发送成功',
       })
     }, function (res) {
+      wx.hideLoading()
       wx.showToast({
         title: res.data.detail,
         icon: 'none'
       })
-    }, function () {
-      wx.hideLoading()
     })
   }
 })
