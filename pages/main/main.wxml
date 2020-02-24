@@ -12,12 +12,6 @@
             </view>
             <view class="weui-grid__label">通讯录</view>
           </navigator>
-          <navigator url="" class="weui-grid" hover-class="weui-grid_active">
-            <view class="weui-grid__icon-lg bg-red">
-              <icon class="iconfont icon-notice"></icon>
-            </view>
-            <view class="weui-grid__label">通知</view>
-          </navigator>
           <view catchtap="userSettings" class="weui-grid" hover-class="weui-grid_active">
             <view class="weui-grid__icon-lg bg-blue">
               <icon class="iconfont icon-set"></icon>

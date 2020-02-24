@@ -4,46 +4,63 @@
   vertical-align: middle;
 }
 
-/* pages/component/nav/nav.wxss */
-.VerticalNav.nav {
-  width: 200rpx;
-  white-space: initial;
+.scroll-board {
+   white-space: nowrap;
+   width: calc(100vw - 90px);
 }
 
-.VerticalNav.nav .cu-item {
-  width: 100%;
-  text-align: center;
-  background-color: #fff;
-  margin: 0;
-  border: none;
-  height: 50px;
-  position: relative;
+.scroll-board .board {
+  display: inline-block;
 }
 
-.VerticalNav.nav .cu-item.cur {
-  background-color: #f1f1f1;
-}
-.VerticalNav.nav .cu-item.cur::after {
-  content: "";
-  width: 8rpx;
-  height: 30rpx;
-  border-radius: 10rpx 0 0 10rpx;
-  position: absolute;
-  background-color: currentColor;
-  top: 0;
-  right: 0rpx;
-  bottom: 0;
-  margin: auto;
-}
-.VerticalBox{
+.board .board-container {
   display: flex;
-}
-.VerticalMain{
-  background-color: #f1f1f1;
+  align-items: center;
 }
 
-.reason-box {
-  height: 6em !important;
-  width: 100%;
+.board .board-item {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 12px;
+  border-bottom: solid 0.5px #ccc;
   text-align: left;
+  padding-left: 5px;
+}
+
+.room-container {
+  width: 90px;
+  justify-content: center;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.room-item {
+  background: #fff;
+  border-bottom: solid 1px #ccc;
+  height: 50px;
+}
+
+.bg1 {
+  background: #eee;
+}
+
+.bg2 {
+  background: #ddd;
+}
+
+.bg-chosen1 {
+  background: #fbfb7c;
+}
+
+.bg-chosen2 {
+  background: #e7e708;
+}
+
+.bg-choose1 {
+  background: #bbffbb;
+}
+
+.bg-choose2 {
+  background: #88ff88;
 }

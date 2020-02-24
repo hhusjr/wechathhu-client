@@ -15,7 +15,20 @@ Page({
     },
     keyword: '',
     showMeta: false,
-    current: {}
+    current: {},
+    searchFocus: false
+  },
+
+  onSearchFocus: function (e) {
+    this.setData({
+      searchFocus: true
+    })
+  },
+
+  onSearchBlur: function (e) {
+    this.setData({
+      searchFocus: false
+    })
   },
 
   doShowMeta: function (e) {

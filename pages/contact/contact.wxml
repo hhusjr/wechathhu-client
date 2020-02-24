@@ -1,10 +1,11 @@
 <view class="cu-bar bg-white search fixed">
   <view class="action">
+    <text class="text-grey text-sm" wx:if="{{!searchFocus}}">仅同事：</text>
     <switch class="orange radius sm" checked bindchange="friendOnly"></switch>
   </view>
   <view class="search-form round">
     <text class="cuIcon-search"></text>
-    <input type="text" placeholder="搜索名字/部职/QQ/电话" confirm-type="search" bindinput="inputKeyword"></input>
+    <input type="text" bindfocus="onSearchFocus" bindblur="onSearchBlur" placeholder="搜索名字/部职/QQ/电话" confirm-type="search" bindinput="inputKeyword"></input>
   </view>
   <view class="action">
     <button size="mini" bindtap="doSearch" class="cu-btn bg-gradual-orange shadow-blur round">搜索</button>

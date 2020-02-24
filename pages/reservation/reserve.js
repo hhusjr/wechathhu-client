@@ -9,21 +9,17 @@ const app = getApp()
 Page({
   data: {
     peopleCount: null,
-    length: null,
-    location: null,
-    label: null,
     date: '',
-    timeFrom: '',
-    timeTo: '',
-    today: '',
-    end: '',
-    showQueryForm: true,
-    availableMeetingrooms: {},
-    locations: [],
-    chosenLocation: null,
-    isShowing: {},
-    reason: '',
-    confirmReserve: false
+    showSelectMeetingroom: false,
+    fromTime: '06:00',
+    toTime: '23:00',
+    chosenMeetingroom: null,
+    chosenTime: {},
+    reserveFrom: '',
+    reserveTo: '',
+    reserveFromDisplay: '',
+    reserveToDisplay: '',
+    isChosen: false
   },
 
   inputPeopleCount: function (e) {
@@ -31,89 +27,121 @@ Page({
       peopleCount: e.detail.value
     });
   },
-  inputLabel: function (e) {
-    this.setData({
-      label: e.detail.value
-    });
-  },
-  inputLocation: function (e) {
-    this.setData({
-      location: e.detail.value
-    });
-  },
-  inputLength: function (e) {
-    this.setData({
-      length: e.detail.value
-    });
-  },
-  onFromTimeChange: function (e) {
-    this.setData({
-      timeFrom: e.detail.value
-    })
-  },
-  onToTimeChange: function (e) {
-    this.setData({
-      timeTo: e.detail.value
-    })
-  },
+
   onDateChange: function (e) {
     this.setData({
       date: e.detail.value
     })
+    this.clearChosen()
   },
+
   onLoad: function (options) {
     wx.setNavigationBarTitle({
       title: '会议室预约'
     });
-    var date = new Date();
+    var today = moment().format('YYYY-MM-DD')
     this.setData({
-      today: date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay()
+      today: today,
+      date: today
     });
-
-    let list = [{}];
-    for (let i = 0; i < 26; i++) {
-      list[i] = {};
-      list[i].name = String.fromCharCode(65 + i);
-      list[i].id = i;
-    }
-    this.setData({
-      list: list,
-      listCur: list[0]
-    })
   },
-  doShowMeetingrooms: function (options) {
-    var self = this
-    if (!this.data.peopleCount || !this.data.date || !this.data.timeFrom || !this.data.timeTo) {
+
+  selectMeetingroom: function () {
+    var params = {}
+    if (this.data.peopleCount) params['people_count'] = this.data.peopleCount
+
+    if (!this.data.date) {
       wx.showToast({
-        title: '请完整填写必填字段。',
+        title: '开会日期是必填项',
         icon: 'none'
-      });
-      return;
+      })
+      return
     }
+
+    var fromTime = moment(this.data.date + ' 00:00:00')
+    var toTime = moment(this.data.date + ' 23:59:59')
+    params['query_from'] = fromTime.utc().format()
+    params['query_to'] = toTime.utc().format()
+
+    var self = this
+
     wx.showLoading({
-      title: '查询中...',
-    });
-    var params = {};
-    if (this.data.label) params['label'] = this.data.label;
-    if (this.data.length) params['length'] = this.data.length;
-    if (this.data.location) params['location'] = this.data.location;
-    params['people_count'] = this.data.peopleCount;
-    params['time_from'] = moment(this.data.date + ' ' + this.data.timeFrom).format();
-    params['time_to'] = moment(this.data.date + ' ' + this.data.timeTo).format();
-    wx.showLoading({
-      title: '查询中...'
-    });
+      title: '正获取会议室',
+      mask: true
+    })
+
     R({
       url: config.serverRouter.meetingrooms + 'available/',
       method: 'GET',
       data: params
     }, function (res) {
-      var availableMeetingrooms = {}
-      var locations = []
-
       var data = res.data
+      var meetingrooms = []
+      var index = 0
+      var fromTime = moment(self.data.date + ' ' + self.data.fromTime)
+      var toTime = moment(self.data.date + ' ' + self.data.toTime)
+      var time = moment(self.data.date + ' ' + self.data.fromTime)
+      var timelineTmp = {}
+      var index = 0
+      var timeline = []
+      while (time.isBefore(toTime)) {
+        var formatted = time.format('HH:mm')
+        timelineTmp[formatted] = {
+          time: formatted,
+          reserved: false,
+          index: index++
+        }
+        timeline.push(formatted)
+        time.add(30, 'm')
+      }
+      self.data.timeline = timeline
+      self.data.meetingroomInfos = []
+      for (var meetingroom of data) {
+        var timeline = JSON.parse(JSON.stringify(timelineTmp))
+        for (var reservation of meetingroom.reservations) {
+          var time = moment(reservation.time_range[0])
+          var final = moment(reservation.time_range[1])
+          while (time.isBefore(final)) {
+            var formatted = time.format('HH:mm')
+            if (!(formatted in timeline) || time.isBefore(fromTime) || time.isAfter(toTime)) {
+              time.add(30, 'm')
+              continue
+            }
+            timeline[formatted].reserved = {
+              reserveUser: reservation.reserve_user,
+              contact: reservation.contact,
+              reserveFrom: reservation.time_range[0],
+              reserveTo: reservation.time_range[1],
+              description: reservation.description
+            }
+            time.add(30, 'm')
+          }
+        }
 
-      if (!(data.length)) {
+        var timelineArr = []
+        for (var key in timeline) {
+          timelineArr.push(timeline[key])
+        }
+
+        timelineArr.sort(function (a, b) {
+          return a.index - b.index
+        })
+
+        meetingrooms.push({
+          id: meetingroom.meetingroom.id,
+          name: meetingroom.meetingroom.name,
+          seatsCount: meetingroom.meetingroom.seats_count,
+          timeline: timelineArr
+        })
+        self.data.meetingroomInfos[meetingroom.meetingroom.id] = {
+          id: meetingroom.meetingroom.id,
+          name: meetingroom.meetingroom.name,
+          seatsCount: meetingroom.meetingroom.seats_count
+        }
+      }
+
+      if (!meetingrooms.length) {
+        wx.hideLoading()
         wx.showToast({
           title: '该条件下无可用会议室',
           icon: 'none'
@@ -121,156 +149,168 @@ Page({
         return
       }
 
-      var tmp
-      for (var meta of data) {
-        locations.push(meta.location)
-        availableMeetingrooms[meta.location] = []
-        for (var meetingroom of meta.meetingrooms) {
-          tmp = {
-            id: meetingroom.id,
-            info: {
-              name: meetingroom.info.name,
-              location: meetingroom.info.location,
-              seatsCount: meetingroom.info.seats_count,
-              label: meetingroom.info.label,
-              description: meetingroom.info.description
-            },
-            choices: []
-          }
-          for (var choice of meetingroom.choices) {
-            tmp.choices.push({
-              display: {
-                timeFrom: moment(choice[0]).format('HH:mm'),
-                timeTo: moment(choice[1]).format('HH:mm')
-              },
-              raw: {
-                timeFrom: choice[0],
-                timeTo: choice[1]
-              }
-            })
-          }
-          availableMeetingrooms[meta.location].push(tmp)
-        }
-      }
-
       self.setData({
-        availableMeetingrooms: availableMeetingrooms,
-        chosenLocation: locations[0],
-        locations: locations,
-        showQueryForm: false
+        showSelectMeetingroom: true,
+        meetingrooms: meetingrooms
+      }, function () {
+        wx.hideLoading()
       })
+    })
+  },
 
-      wx.hideLoading()
-    }, function (res) {
-      wx.hideLoading();
+  hideModal: function () {
+    this.setData({
+      showSelectMeetingroom: false
+    })
+  },
+
+  toggleState: function (option) {
+    var meetingroomId = option.currentTarget.dataset.meetingroom
+    var meetingroomName = option.currentTarget.dataset.meetingroomName
+    var timePoint = option.currentTarget.dataset.timePoint
+    if (meetingroomId == this.data.chosenMeetingroom) {
+      var state = this.data.chosenTime[timePoint] ? false : true
+      this.setData({
+        ['chosenTime.' + timePoint]: state
+      })
+      return
+    }
+    var chosenTime = {
+      [timePoint]: true
+    }
+    this.setData({
+      chosenTime: chosenTime,
+      chosenMeetingroom: meetingroomId,
+      chosenMeetingroomName: meetingroomName
+    })
+  },
+
+  confirmModal: function () {
+    var max = -1
+    var min = -1
+    var len = 0
+    for (var index in this.data.chosenTime) {
+      index = parseInt(index)
+      if (!this.data.chosenTime[index]) continue;
+      len++
+      if (max == -1 || index > max) max = index;
+      if (min == -1 || index < min) min = index;
+    }
+    if (max - min + 1 != len) {
       wx.showToast({
-        title: res.data['detail'],
+        title: '请选择一个连续区间',
         icon: 'none'
-      });
-    });
-  },
+      })
+      return
+    }
+    var reserveFrom = moment(this.data.date + ' ' + this.data.timeline[min])
+    var reserveTo = moment(this.data.date + ' ' + this.data.timeline[max]).add(30, 'm')
 
-  tabSelect: function (e) {
     this.setData({
-      chosenLocation: e.currentTarget.dataset.location,
-      isShowing: {}
+      reserveFromDisplay: reserveFrom.format('HH:mm'),
+      reserveToDisplay: reserveTo.format('HH:mm'),
+    })
+
+    this.setData({
+      reserveFrom: reserveFrom.utc().format(),
+      reserveTo: reserveTo.utc().format(),
+      isChosen: true,
+      showSelectMeetingroom: false
     })
   },
 
-  goBack: function (e) {
-    this.setData({
-      isShowing: {},
-      showQueryForm: true
+  showReserveInfo: function (option) {
+    var reserveInfo = option.currentTarget.dataset.reserve
+    var meetingroomName = option.currentTarget.dataset.meetingroomName
+    var contact = reserveInfo.contact
+    wx.showModal({
+      title: meetingroomName + '预约情况',
+      showCancel: true,
+      content: reserveInfo.reserveUser + '已预约' + moment(reserveInfo.reserveFrom).format('HH:mm') + '到' + moment(reserveInfo.reserveTo).format('HH:mm') + '，原因是：“' + reserveInfo.description + '”。' + (contact ? '是否立即电话协商？' : ''),
+      success: function (res) {
+        if (!res.confirm || !contact) return
+        wx.makePhoneCall({
+          phoneNumber: contact,
+        })
+      }
     })
   },
 
-  toggleShowing: function (e) {
-    var index = e.currentTarget.dataset.index
-    this.data.isShowing[index] = this.data.isShowing[index] ? false : true
+  clearChosen: function () {
     this.setData({
-      isShowing: this.data.isShowing
+      chosenMeetingroom: null,
+      chosenTime: {},
+      chosenMeetingroomName: null,
+      isChosen: false
     })
   },
 
-  inputReason: function (e) {
-    this.setData({
-      reason: e.detail.value
-    })
-  },
-
-  chooseMeetingroom: function (e) {
+  doReserve: function () {
     var self = this
-
-    if (!self.data.reason) {
+    
+    if (!this.data.isChosen) {
       wx.showToast({
-        title: '请输入预约原因',
+        title: '请先选择会议时间地点',
+        icon: 'none'
+      })
+      return
+    }
+    var description = this.data.description
+    if (!description) {
+      wx.showToast({
+        title: '请填写预约原因',
         icon: 'none'
       })
       return
     }
 
-    var location = this.data.chosenLocation
-    var meetingroomIndex = e.currentTarget.dataset.meetingroom
-    var choiceIndex = e.currentTarget.dataset.choice
+    wx.showModal({
+      title: '确认预约',
+      content: '您确认要预约吗？',
+      showCancel: true,
+      success: function (res) {
+        if (!res.confirm) return
 
-    var meetingroomId = this.data.availableMeetingrooms[location][meetingroomIndex].id
-    var reserveFrom = this.data.availableMeetingrooms[location][meetingroomIndex].choices[choiceIndex].raw.timeFrom
-    var reserveTo = this.data.availableMeetingrooms[location][meetingroomIndex].choices[choiceIndex].raw.timeTo
-
-    wx.showLoading({
-      title: '预约中',
-      mask: true
-    })
-
-    R({
-      url: config.serverRouter.reservations,
-      method: 'POST',
-      data: {
-        'meetingroom_object': meetingroomId,
-        'reserve_from': reserveFrom,
-        'reserve_to': reserveTo,
-        'description': self.data.reason
-      }
-    }, function () {
-      wx.hideLoading()
-      wx.showToast({
-        title: '预约成功',
-        mask: true,
-        duration: 2000
-      })
-      setTimeout(function () {
-        wx.redirectTo({
-          url: 'my',
+        wx.showLoading({
+          title: '预约中',
         })
-      }, 2000)
-    }, function () {
-      wx.showToast({
-        title: '会议室在该时间段已经被占用',
-        mask: true,
-        icon: 'none',
-        duration: 2000
-      })
-      setTimeout(function () {
-        self.goBack()
-      }, 2000)
-    }, function () {
-      self.setData({
-        confirmReserve: false
-      })
+
+        R({
+          url: config.serverRouter.reservations,
+          method: 'POST',
+          data: {
+            'reserve_from': self.data.reserveFrom,
+            'reserve_to': self.data.reserveTo,
+            'description': self.data.description,
+            'meetingroom_object': self.data.chosenMeetingroom
+          }
+        }, function (res) {
+          wx.hideLoading()
+          self.clearChosen()
+          wx.showModal({
+            title: '消息提示',
+            showCancel: false,
+            content: '预约成功！',
+            success: function () {
+              wx.redirectTo({
+                url: 'my',
+              })
+            }
+          })
+        }, function (res) {
+          wx.hideLoading()
+          wx.showToast({
+            title: res.data.non_field_errors[0],
+            icon: 'none'
+          })
+        })
+      }
     })
   },
 
-  confirmReserve: function (e) {
+  inputDescription: function (e) {
     this.setData({
-      confirmReserve: true,
-      choiceIndex: e.currentTarget.dataset.choice,
-      meetingroomIndex: e.currentTarget.dataset.meetingroom
-    })
-  },
-
-  hideConfirmReserve: function () {
-    this.setData({
-      confirmReserve: false
+      description: e.detail.value
     })
   }
 })
