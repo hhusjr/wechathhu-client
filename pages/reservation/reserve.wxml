@@ -17,7 +17,7 @@
           <view class="weui-label">开会人数</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="选填" type="number" bindinput="inputPeopleCount" value="{{peopleCount}}" />
+          <input class="weui-input" placeholder="选填" type="number" bindinput="inputPeopleCount" value="{{peopleCount}}" hidden="{{showSelectMeetingroom}}" />
         </view>
       </view>
       <view class="weui-cell ">
@@ -64,7 +64,7 @@
           <view class="weui-label">预约原因</view>
         </view>
         <view class="weui-cell__bd">
-          <textarea style="width: 100%; height: 6em;" bindinput="inputDescription"></textarea>
+          <textarea style="width: 100%; height: 6em;" bindinput="inputDescription" hidden="{{showSelectMeetingroom}}"></textarea>
         </view>
       </view>
     </view>
