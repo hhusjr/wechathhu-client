@@ -15,8 +15,17 @@ Page({
     password: '',
     userName: '',
     email: '',
+    department: null,
     errors: {},
-    userMeta: {}
+    userMeta: {},
+    departments: []
+  },
+
+  bindDepartmentChange: function (e) {
+    var val = e.detail.value
+    this.setData({
+      department: this.data.departments[val]
+    })
   },
 
   tabClick: function (e) {
@@ -97,6 +106,25 @@ Page({
       userName: userInfo.userName,
       email: userInfo.email
     });
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
+    var self = this
+    R({
+      url: config.serverRouter.departments,
+      method: 'GET'
+    }, function(res) {
+      var departments = res.data
+      self.setData({
+        departments: departments,
+        department: {
+          id: userInfo.department.id,
+          name: userInfo.department.name
+        }
+      })
+      wx.hideLoading()
+    })
   },
   inputFirstName: function (e) {
     this.setData({
@@ -123,10 +151,13 @@ Page({
     var lastName = this.data.lastName;
     var password = this.data.password;
     var email = this.data.email;
+    console.log(this.data.department)
+    var department = this.data.department ? this.data.department.id : null;
     var data = {
       'first_name': firstName,
       'last_name': lastName,
-      'email': email
+      'email': email,
+      'department': department
     };
     if (password != '') data['password'] = password;
     var self = this;
@@ -153,7 +184,8 @@ Page({
         firstName: userInfo['first_name'],
         lastName: userInfo['last_name'],
         email: userInfo['email'],
-        userName: userInfo['username']
+        userName: userInfo['username'],
+        department: userInfo['department']
       }
       var pages = getCurrentPages();
       var prevPage = pages[pages.length - 2];

@@ -50,7 +50,7 @@ Page({
   friendOnly: function (e) {
     var checked = e.detail.value
     this.data.queryParams['my'] = checked ? 'yes' : 'no'
-    this.getQueryset(true, checked ? '仅显示同事' : '显示所有人员')
+    this.getQueryset(true, checked ? '仅显示好友' : '显示所有人员')
   },
 
   inputKeyword: function (e) {
@@ -163,8 +163,8 @@ Page({
     var action = e.currentTarget.dataset.action
     var self = this
     var map = {
-      'add': ['POST', true, '同事添加成功'],
-      'remove': ['DELETE', false, '同事删除成功']
+      'add': ['POST', true, '好友添加成功'],
+      'remove': ['DELETE', false, '好友删除成功']
     }
     R({
       url: config.serverRouter.friends + user + '/',

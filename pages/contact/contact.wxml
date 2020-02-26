@@ -1,6 +1,6 @@
 <view class="cu-bar bg-white search fixed">
-  <view class="action">
-    <text class="text-grey text-sm" wx:if="{{!searchFocus}}">仅同事：</text>
+  <view class="action" wx:if="{{!searchFocus}}">
+    <text class="text-grey text-sm">仅同事/好友：</text>
     <switch class="orange radius sm" checked bindchange="friendOnly"></switch>
   </view>
   <view class="search-form round">
@@ -20,7 +20,7 @@
         <view class="content">
           <view class="text-grey">{{userMeta[user].fullname}}</view>
           <view class="text-gray text-sm">
-            <block wx:if="{{userMeta[user].department}}">{{userMeta[user].department}}</block>
+            <block wx:if="{{userMeta[user].user_meta.department}}">{{userMeta[user].user_meta.department.name}}</block>
             <block wx:if="{{userMeta[user].post}}">{{userMeta[user].post}}</block>
           </view>
         </view>
@@ -106,7 +106,7 @@
           <text class="cuIcon-addressbook text-blue"></text> 部门
         </view>
         <view class="action">
-          <text class="text-grey text-sm">{{current.department ? current.department : ''}}</text>
+          <text class="text-grey text-sm">{{current.user_meta.department ? current.user_meta.department.name : ''}}</text>
         </view>
       </view>
       <view class="cu-item">

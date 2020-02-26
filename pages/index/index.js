@@ -34,7 +34,8 @@ Page({
                 firstName: userInfo['first_name'],
                 lastName: userInfo['last_name'],
                 email: userInfo['email'],
-                userName: userInfo['username']
+                userName: userInfo['username'],
+                department: userInfo['department']
               }
               wx.redirectTo({
                 url: '../main/main'

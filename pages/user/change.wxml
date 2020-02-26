@@ -18,6 +18,19 @@
               <input disabled="disabled" class="weui-input" value="{{userName}}" />
             </view>
           </view>
+          <view class="weui-cell {{errors['department'] ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__hd">
+              <view class="weui-label">系所</view>
+            </view>
+            <view class="weui-cell__bd">
+              <picker bindchange="bindDepartmentChange" value="{{departmentId}}" range="{{departments}}" range-key="name">
+                <text>{{department !== null ? department.name : '选择...'}}</text>
+              </picker>
+            </view>
+            <view class="weui-cell__ft" wx:if="{{errors['department']}}">
+              <icon type="warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
           <view class="weui-cell {{errors['email'] ? 'weui-cell_warn' : ''}}">
             <view class="weui-cell__hd">
               <view class="weui-label">邮箱</view>
@@ -72,18 +85,7 @@
     <view class="weui-tab__content" wx:if="{{activeIndex == 1}}">
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells weui-cells_after-title">
-          <view class="weui-cell {{errors['department'] ? 'weui-cell_warn' : ''}}">
-            <view class="weui-cell__hd">
-              <view class="weui-label">部门</view>
-            </view>
-            <view class="weui-cell__bd">
-              <input class="weui-input" bindinput="inputMeta" data-name="department" value="{{userMeta.department}}" />
-            </view>
-            <view class="weui-cell__ft" wx:if="{{errors['department']}}">
-              <icon type="warn" size="23" color="#E64340"></icon>
-            </view>
-          </view>
-                    <view class="weui-cell {{errors['post'] ? 'weui-cell_warn' : ''}}">
+          <view class="weui-cell {{errors['post'] ? 'weui-cell_warn' : ''}}">
             <view class="weui-cell__hd">
               <view class="weui-label">职位</view>
             </view>
