@@ -118,10 +118,10 @@ Page({
       var departments = res.data
       self.setData({
         departments: departments,
-        department: {
+        department: userInfo.department ? {
           id: userInfo.department.id,
           name: userInfo.department.name
-        }
+        } : null
       })
       wx.hideLoading()
     })

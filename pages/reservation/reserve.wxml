@@ -40,19 +40,19 @@
             <view class="weui-panel__bd">
               <view class="weui-cells weui-cells_after-title">
                 <view class="weui-cell">
-                  <view class="weui-cell__bd">
+                  <view class="weui-cell__bd text-sm">
                     <icon class="iconfont color-green icon-clock"></icon> 开始时间</view>
-                  <view class="weui-cell__ft">{{reserveFromDisplay}}</view>
+                  <view class="weui-cell__ft text-sm">{{reserveFromDisplay}}</view>
                 </view>
                 <view class="weui-cell">
-                  <view class="weui-cell__bd">
+                  <view class="weui-cell__bd text-sm">
                     <icon class="iconfont color-red icon-clock"></icon> 结束时间</view>
-                  <view class="weui-cell__ft">{{reserveToDisplay}}</view>
+                  <view class="weui-cell__ft text-sm">{{reserveToDisplay}}</view>
                 </view>
                 <view class="weui-cell">
-                  <view class="weui-cell__bd">
+                  <view class="weui-cell__bd text-sm">
                     <icon class="iconfont color-blue icon-map"></icon> 会议室</view>
-                  <view class="weui-cell__ft">{{chosenMeetingroomName}}</view>
+                  <view class="weui-cell__ft text-sm">{{chosenMeetingroomName}}</view>
                 </view>
               </view>
             </view>
