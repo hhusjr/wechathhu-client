@@ -299,6 +299,7 @@ Page({
           })
         }, function (res) {
           wx.hideLoading()
+          self.clearChosen()
           wx.showToast({
             title: res.data.non_field_errors[0],
             icon: 'none'
